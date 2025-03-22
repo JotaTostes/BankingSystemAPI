@@ -14,7 +14,7 @@ namespace BankingAPI.Configurations
         {
             // Configuração do banco de dados
             services.AddDbContext<BankingDbContext>(options =>
-                options.UseSqlServer(connectionString));
+                options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 25))));
 
             services.AddScoped<IContaBancariaRepository, ContaBancariaRepository>();
             services.AddScoped<IRegistroDesativacaoRepository, RegistroDesativacaoRepository>();

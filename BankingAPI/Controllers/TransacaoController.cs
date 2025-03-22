@@ -16,6 +16,11 @@ namespace BankingAPI.Controllers
             _service = service;
         }
 
+        /// <summary>
+        /// Realiza uma transferência entre contas
+        /// </summary>
+        /// <param name="transferenciaDto"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Transferir([FromBody] TransferenciaDto transferenciaDto)
         {

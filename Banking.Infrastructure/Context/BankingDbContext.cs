@@ -15,8 +15,21 @@ namespace Banking.Infrastructure.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ContaBancaria>()
+                .ToTable("ContasBancarias")
                 .HasIndex(a => a.Documento)
                 .IsUnique();
+
+            modelBuilder.Entity<Transacao>()
+                .ToTable("Transacoes")
+                .Property(t => t.Valor)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<RegistroDesativacaoConta>()
+                .ToTable("RegistroDesativacaoConta");
+
+            modelBuilder.Entity<ContaBancaria>()
+                .Property(a => a.Saldo)
+                .HasColumnType("decimal(18,2)");
         }
     }
 }

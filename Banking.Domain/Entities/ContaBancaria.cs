@@ -15,7 +15,7 @@ namespace Banking.Domain.Entities
         public DateTime DataAbertura { get; set; }
         public bool Ativa { get; set; } = true;
 
-        private ContaBancaria() { }
+        public ContaBancaria() { }
 
         public ContaBancaria(string nomeCliente, string numeroDocumento)
         {

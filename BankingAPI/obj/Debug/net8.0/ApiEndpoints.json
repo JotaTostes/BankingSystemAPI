@@ -1,0 +1,81 @@
+[
+  {
+    "ContainingType": "BankingAPI.Controllers.ContaBancariaController",
+    "Method": "Get",
+    "RelativePath": "api/ContaBancaria",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BankingAPI.Controllers.ContaBancariaController",
+    "Method": "CriarConta",
+    "RelativePath": "api/ContaBancaria",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "criarContaBancariaDto",
+        "Type": "Banking.Application.DTOs.CriarContaBancariaDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BankingAPI.Controllers.ContaBancariaController",
+    "Method": "DesativarConta",
+    "RelativePath": "api/ContaBancaria/{numeroDocumento}/desativar",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "numeroDocumento",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BankingAPI.Controllers.ContaBancariaController",
+    "Method": "ObterContas",
+    "RelativePath": "api/ContaBancaria/ContasFiltro",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "nome",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "documento",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BankingAPI.Controllers.TransacaoController",
+    "Method": "Transferir",
+    "RelativePath": "api/Transacao",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "transferenciaDto",
+        "Type": "Banking.Application.DTOs.TransferenciaDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

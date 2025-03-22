@@ -1,0 +1,167 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "BankingAPI",
+    "version": "1.0"
+  },
+  "paths": {
+    "/api/ContaBancaria": {
+      "get": {
+        "tags": [
+          "ContaBancaria"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "ContaBancaria"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarContaBancariaDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarContaBancariaDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarContaBancariaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/ContaBancaria/ContasFiltro": {
+      "get": {
+        "tags": [
+          "ContaBancaria"
+        ],
+        "parameters": [
+          {
+            "name": "nome",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "documento",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/ContaBancaria/{numeroDocumento}/desativar": {
+      "put": {
+        "tags": [
+          "ContaBancaria"
+        ],
+        "parameters": [
+          {
+            "name": "numeroDocumento",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Transacao": {
+      "post": {
+        "tags": [
+          "Transacao"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransferenciaDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransferenciaDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransferenciaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CriarContaBancariaDto": {
+        "type": "object",
+        "properties": {
+          "nomeCliente": {
+            "type": "string",
+            "nullable": true
+          },
+          "documento": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TransferenciaDto": {
+        "type": "object",
+        "properties": {
+          "numeroDocumentoOrigem": {
+            "type": "string",
+            "nullable": true
+          },
+          "numeroDocumentoDestino": {
+            "type": "string",
+            "nullable": true
+          },
+          "valor": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}
