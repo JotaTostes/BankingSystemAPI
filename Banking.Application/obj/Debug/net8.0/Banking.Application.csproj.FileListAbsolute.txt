@@ -1,0 +1,16 @@
+D:\Repos\BankingSystemAPI\Banking.Application\bin\Debug\net8.0\Banking.Application.deps.json
+D:\Repos\BankingSystemAPI\Banking.Application\bin\Debug\net8.0\Banking.Application.dll
+D:\Repos\BankingSystemAPI\Banking.Application\bin\Debug\net8.0\Banking.Application.pdb
+D:\Repos\BankingSystemAPI\Banking.Application\bin\Debug\net8.0\Banking.Domain.dll
+D:\Repos\BankingSystemAPI\Banking.Application\bin\Debug\net8.0\Banking.Domain.pdb
+D:\Repos\BankingSystemAPI\Banking.Application\obj\Debug\net8.0\Banking.Application.csproj.AssemblyReference.cache
+D:\Repos\BankingSystemAPI\Banking.Application\obj\Debug\net8.0\Banking.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\Repos\BankingSystemAPI\Banking.Application\obj\Debug\net8.0\Banking.Application.AssemblyInfoInputs.cache
+D:\Repos\BankingSystemAPI\Banking.Application\obj\Debug\net8.0\Banking.Application.AssemblyInfo.cs
+D:\Repos\BankingSystemAPI\Banking.Application\obj\Debug\net8.0\Banking.Application.csproj.CoreCompileInputs.cache
+D:\Repos\BankingSystemAPI\Banking.Application\obj\Debug\net8.0\Banking.Application.sourcelink.json
+D:\Repos\BankingSystemAPI\Banking.Application\obj\Debug\net8.0\Banking..9061490F.Up2Date
+D:\Repos\BankingSystemAPI\Banking.Application\obj\Debug\net8.0\Banking.Application.dll
+D:\Repos\BankingSystemAPI\Banking.Application\obj\Debug\net8.0\refint\Banking.Application.dll
+D:\Repos\BankingSystemAPI\Banking.Application\obj\Debug\net8.0\Banking.Application.pdb
+D:\Repos\BankingSystemAPI\Banking.Application\obj\Debug\net8.0\ref\Banking.Application.dll

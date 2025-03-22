@@ -1,11 +1,30 @@
 {
   "version": 3,
   "targets": {
-    "net8.0": {}
+    "net8.0": {
+      "Banking.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/Banking.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Banking.Domain.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "Banking.Domain/1.0.0": {
+      "type": "project",
+      "path": "../Banking.Domain/Banking.Domain.csproj",
+      "msbuildProject": "../Banking.Domain/Banking.Domain.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net8.0": []
+    "net8.0": [
+      "Banking.Domain >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\joao_\\.nuget\\packages\\": {},
@@ -38,7 +57,11 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\Repos\\BankingSystemAPI\\Banking.Domain\\Banking.Domain.csproj": {
+              "projectPath": "D:\\Repos\\BankingSystemAPI\\Banking.Domain\\Banking.Domain.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

@@ -1,0 +1,12 @@
+D:\Repos\BankingSystemAPI\Banking.Domain\bin\Debug\net8.0\Banking.Domain.deps.json
+D:\Repos\BankingSystemAPI\Banking.Domain\bin\Debug\net8.0\Banking.Domain.dll
+D:\Repos\BankingSystemAPI\Banking.Domain\bin\Debug\net8.0\Banking.Domain.pdb
+D:\Repos\BankingSystemAPI\Banking.Domain\obj\Debug\net8.0\Banking.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Repos\BankingSystemAPI\Banking.Domain\obj\Debug\net8.0\Banking.Domain.AssemblyInfoInputs.cache
+D:\Repos\BankingSystemAPI\Banking.Domain\obj\Debug\net8.0\Banking.Domain.AssemblyInfo.cs
+D:\Repos\BankingSystemAPI\Banking.Domain\obj\Debug\net8.0\Banking.Domain.csproj.CoreCompileInputs.cache
+D:\Repos\BankingSystemAPI\Banking.Domain\obj\Debug\net8.0\Banking.Domain.sourcelink.json
+D:\Repos\BankingSystemAPI\Banking.Domain\obj\Debug\net8.0\Banking.Domain.dll
+D:\Repos\BankingSystemAPI\Banking.Domain\obj\Debug\net8.0\refint\Banking.Domain.dll
+D:\Repos\BankingSystemAPI\Banking.Domain\obj\Debug\net8.0\Banking.Domain.pdb
+D:\Repos\BankingSystemAPI\Banking.Domain\obj\Debug\net8.0\ref\Banking.Domain.dll
