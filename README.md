@@ -68,6 +68,8 @@ Abaixo, você encontrará um exemplo de como implementar uma chamada GET em sua 
 - Utilize HttpClient para configurar requisições para a API 
 - URL https://localhost:5001/api/[controller]
 - Atualmente, nossa API não requer autenticação JWT. A segurança do sistema será garantida por meio da restrição física de acesso à máquina onde ele será executado.
+
+  C#
 ```c#
 public class ContaBancaria
 {
