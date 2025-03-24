@@ -2,6 +2,8 @@
 using Banking.Application.Services;
 using Banking.Domain.Entities;
 using Banking.Domain.Interfaces;
+using Banking.Shared.Validations;
+using FluentValidation;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -15,23 +17,29 @@ namespace Banking.Tests.ContaBancariaTest
     {
         private readonly Mock<IContaBancariaRepository> _mockContaBancariaRepository;
         private readonly Mock<IRegistroDesativacaoRepository> _mockRegistroDesativacaoRepository;
+        private readonly ContaBancariaValidator _mockContaBancariaValidator;
         private readonly ContaBancariaService _service;
 
         public ContaBancariaServiceTests()
         {
             _mockContaBancariaRepository = new Mock<IContaBancariaRepository>();
             _mockRegistroDesativacaoRepository = new Mock<IRegistroDesativacaoRepository>();
-            _service = new ContaBancariaService(_mockContaBancariaRepository.Object, _mockRegistroDesativacaoRepository.Object);
+            _mockContaBancariaValidator = new ContaBancariaValidator(_mockContaBancariaRepository.Object);
+
+            _service = new ContaBancariaService(
+                _mockContaBancariaRepository.Object,
+                _mockRegistroDesativacaoRepository.Object,
+                _mockContaBancariaValidator
+            );
         }
 
         [Fact]
         public async Task ObterTodasContasAsync_DeveRetornarListaDeContas()
         {
-            // Arrange
             var contasBancarias = new List<ContaBancaria>
             {
-                new ContaBancaria("João", "12345678901"),
-                new ContaBancaria("Maria", "98765432100")
+                new ContaBancaria("João", "28591434080"),
+                new ContaBancaria("Maria", "60683743007")
             };
 
             _mockContaBancariaRepository.Setup(repo => repo.GetAllAsync()).ReturnsAsync(contasBancarias);
@@ -43,27 +51,32 @@ namespace Banking.Tests.ContaBancariaTest
         }
 
         [Fact]
-        public async Task CriarContaAsync_DeveRetornarTrue_QuandoContaNaoExistir()
+        public async Task CriarContaAsync_DeveRetornarSucesso_QuandoContaNaoExistir()
         {
-            var dto = new CriarContaBancariaDto { NomeCliente = "Maria", Documento = "12345678901" };
+            var dto = new CriarContaBancariaDto { NomeCliente = "Maria", Documento = "60683743007" };
+
             _mockContaBancariaRepository.Setup(repo => repo.DocumentoExisteAsync(dto.Documento)).ReturnsAsync(false);
             _mockContaBancariaRepository.Setup(repo => repo.AddAsync(It.IsAny<ContaBancaria>())).Returns(Task.CompletedTask);
 
-            var result = await _service.CriarContaAsync(dto);
+            var (sucesso, erros) = await _service.CriarContaAsync(dto);
 
-            Assert.True(result);
+            Assert.True(sucesso);
+            Assert.Empty(erros);
             _mockContaBancariaRepository.Verify(repo => repo.AddAsync(It.IsAny<ContaBancaria>()), Times.Once);
         }
-
         [Fact]
-        public async Task CriarContaAsync_DeveRetornarFalse_QuandoDocumentoExistir()
+        public async Task CriarContaAsync_DeveRetornarErro_QuandoDocumentoExistir()
         {
-            var dto = new CriarContaBancariaDto { NomeCliente = "João", Documento = "12345678901" };
+            var dto = new CriarContaBancariaDto { NomeCliente = "João", Documento = "28591434080" };
+            var errosEsperados = new List<string> { "Já existe uma conta bancária cadastrada para este documento." };
+
             _mockContaBancariaRepository.Setup(repo => repo.DocumentoExisteAsync(dto.Documento)).ReturnsAsync(true);
 
-            var result = await _service.CriarContaAsync(dto);
+            var (sucesso, erros) = await _service.CriarContaAsync(dto);
 
-            Assert.False(result);
+            Assert.False(sucesso);
+            Assert.NotEmpty(erros);
+            Assert.Equal(errosEsperados, erros);
             _mockContaBancariaRepository.Verify(repo => repo.AddAsync(It.IsAny<ContaBancaria>()), Times.Never);
         }
 
@@ -73,11 +86,10 @@ namespace Banking.Tests.ContaBancariaTest
             var contasBancarias = new List<ContaBancaria>
             {
                 new ContaBancaria("João Silva", "12345678901") ,
-                new ContaBancaria("Maria", "98765432100")
             };
-            _mockContaBancariaRepository.Setup(repo => repo.BuscarContasAsync("João", "12345678901")).ReturnsAsync(contasBancarias);
+            _mockContaBancariaRepository.Setup(repo => repo.BuscarContasAsync("João", "28591434080")).ReturnsAsync(contasBancarias);
 
-            var result = await _service.BuscarContasAsync("João", "12345678901");
+            var result = await _service.BuscarContasAsync("João", "28591434080");
 
             Assert.NotNull(result);
             Assert.Single(result);
@@ -89,14 +101,12 @@ namespace Banking.Tests.ContaBancariaTest
         [Fact]
         public async Task DesativarContaAsync_DeveRetornarTrue_QuandoContaForDesativada()
         {
-            // Arrange
-            var conta = new ContaBancaria("Cliente", "12345678901") { Ativa = true };
-            _mockContaBancariaRepository.Setup(repo => repo.GetByDocumentoAsync("12345678901")).ReturnsAsync(conta);
+            var conta = new ContaBancaria("João", "28591434080") { Ativa = true };
+            _mockContaBancariaRepository.Setup(repo => repo.GetByDocumentoAsync("28591434080")).ReturnsAsync(conta);
             _mockContaBancariaRepository.Setup(repo => repo.UpdateAsync(conta)).Returns(Task.CompletedTask);
             _mockRegistroDesativacaoRepository.Setup(repo => repo.AdicionarAsync(It.IsAny<RegistroDesativacaoConta>())).Returns(Task.CompletedTask);
 
-            // Act
-            var result = await _service.DesativarContaAsync("12345678901", "AdministradorSistema");
+            var result = await _service.DesativarContaAsync("28591434080", "AdministradorSistema");
 
             Assert.True(result);
             Assert.False(conta.Ativa);
@@ -106,9 +116,9 @@ namespace Banking.Tests.ContaBancariaTest
         [Fact]
         public async Task DesativarContaAsync_DeveRetornarFalse_QuandoContaNaoExistir()
         {
-            _mockContaBancariaRepository.Setup(repo => repo.GetByDocumentoAsync("12345678901")).ReturnsAsync((ContaBancaria)null);
+            _mockContaBancariaRepository.Setup(repo => repo.GetByDocumentoAsync("28591434080")).ReturnsAsync((ContaBancaria)null);
 
-            var result = await _service.DesativarContaAsync("12345678901", "AdministradorSistema");
+            var result = await _service.DesativarContaAsync("28591434080", "AdministradorSistema");
 
             Assert.False(result);
         }
@@ -116,7 +126,7 @@ namespace Banking.Tests.ContaBancariaTest
         [Fact]
         public async Task DesativarContaAsync_DeveRetornarFalse_QuandoContaJaEstiverDesativada()
         {
-            var conta = new ContaBancaria("Cliente", "12345678901") { Ativa = false };
+            var conta = new ContaBancaria("Maria", "60683743007") { Ativa = false };
             _mockContaBancariaRepository.Setup(repo => repo.GetByDocumentoAsync("12345678901")).ReturnsAsync(conta);
 
             var result = await _service.DesativarContaAsync("12345678901", "AdministradorSistema");

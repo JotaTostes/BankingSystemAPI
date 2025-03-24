@@ -1,11 +1,12 @@
-D:\Repos\BankingSystemAPI\Banking.Shared\bin\Debug\net8.0\Banking.Shared.deps.json
-D:\Repos\BankingSystemAPI\Banking.Shared\bin\Debug\net8.0\Banking.Shared.dll
-D:\Repos\BankingSystemAPI\Banking.Shared\bin\Debug\net8.0\Banking.Shared.pdb
+D:\Repos\BankingSystemAPI\Banking.Shared\obj\Debug\net8.0\Banking.Shared.csproj.AssemblyReference.cache
 D:\Repos\BankingSystemAPI\Banking.Shared\obj\Debug\net8.0\Banking.Shared.GeneratedMSBuildEditorConfig.editorconfig
 D:\Repos\BankingSystemAPI\Banking.Shared\obj\Debug\net8.0\Banking.Shared.AssemblyInfoInputs.cache
 D:\Repos\BankingSystemAPI\Banking.Shared\obj\Debug\net8.0\Banking.Shared.AssemblyInfo.cs
 D:\Repos\BankingSystemAPI\Banking.Shared\obj\Debug\net8.0\Banking.Shared.csproj.CoreCompileInputs.cache
 D:\Repos\BankingSystemAPI\Banking.Shared\obj\Debug\net8.0\Banking.Shared.sourcelink.json
+D:\Repos\BankingSystemAPI\Banking.Shared\bin\Debug\net8.0\Banking.Shared.deps.json
+D:\Repos\BankingSystemAPI\Banking.Shared\bin\Debug\net8.0\Banking.Shared.dll
+D:\Repos\BankingSystemAPI\Banking.Shared\bin\Debug\net8.0\Banking.Shared.pdb
 D:\Repos\BankingSystemAPI\Banking.Shared\obj\Debug\net8.0\Banking.Shared.dll
 D:\Repos\BankingSystemAPI\Banking.Shared\obj\Debug\net8.0\refint\Banking.Shared.dll
 D:\Repos\BankingSystemAPI\Banking.Shared\obj\Debug\net8.0\Banking.Shared.pdb

@@ -25,14 +25,16 @@ namespace BankingAPI.Controllers
         public async Task<IActionResult> Transferir([FromBody] TransferenciaDto transferenciaDto)
         {
             if (transferenciaDto.Valor <= 0)
-                return BadRequest("O valor da transferência deve ser maior que zero");
+                return BadRequest("O valor da transferência deve ser maior que zero.");
 
-            var resultado = await _service.TransferirAsync(transferenciaDto);
+            var (sucesso, erros) = await _service.TransferirAsync(transferenciaDto);
 
-            if (!resultado)
-                return BadRequest("Transferência falhou. Verifique se ambas as contas estão ativas e se a conta de origem tem saldo suficiente.");
+            if (!sucesso)
+            {
+                return BadRequest(erros);
+            }
 
-            return Ok("Transferência concluída com sucesso");
+            return Ok("Transferência concluída com sucesso.");
         }
     }
 }

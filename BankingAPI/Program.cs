@@ -1,6 +1,7 @@
 ﻿using Banking.Infrastructure.Context;
 using BankingAPI.Configurations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +10,18 @@ builder.Services.AddDependencyInjection(builder.Configuration.GetConnectionStrin
 // Adicionando Controllers
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(
+    c =>
+    {
+        c.SwaggerDoc("v1", new OpenApiInfo
+        {
+            Title = "Documentação API Banking",
+            Description = "Api do Sistema de Caixa de Banco, permitindo o cadastro de contas e a transferência de valores.",
+            Contact = new OpenApiContact() { Name = "João Guilherme", Email = "joao_tostes17@hotmail.com" },
+        });
+        c.IncludeXmlComments(Path.Combine(System.AppContext.BaseDirectory, "ApiBanking.xml"));
+    }
+);
 
 var app = builder.Build();
 

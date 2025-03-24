@@ -1,8 +1,12 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "BankingAPI",
-    "version": "1.0"
+    "title": "Documentação API Banking",
+    "description": "Api do Sistema de Caixa de Banco, permitindo o cadastro de contas e a transferência de valores.",
+    "contact": {
+      "name": "João Guilherme",
+      "email": "joao_tostes17@hotmail.com"
+    }
   },
   "paths": {
     "/api/ContaBancaria": {
@@ -10,9 +14,36 @@
         "tags": [
           "ContaBancaria"
         ],
+        "summary": "Obtém todas as contas bancárias",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContaBancaria"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContaBancaria"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContaBancaria"
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -20,7 +51,9 @@
         "tags": [
           "ContaBancaria"
         ],
+        "summary": "Cria uma nova conta bancária",
         "requestBody": {
+          "description": "",
           "content": {
             "application/json": {
               "schema": {
@@ -41,7 +74,33 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContaBancariaDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContaBancariaDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContaBancariaDto"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -51,10 +110,12 @@
         "tags": [
           "ContaBancaria"
         ],
+        "summary": "Obtém contas bancárias com base em filtros",
         "parameters": [
           {
             "name": "nome",
             "in": "query",
+            "description": "",
             "schema": {
               "type": "string"
             }
@@ -62,6 +123,7 @@
           {
             "name": "documento",
             "in": "query",
+            "description": "",
             "schema": {
               "type": "string"
             }
@@ -69,7 +131,33 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContaBancariaDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContaBancariaDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContaBancariaDto"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -79,10 +167,12 @@
         "tags": [
           "ContaBancaria"
         ],
+        "summary": "Desativa uma conta bancária",
         "parameters": [
           {
             "name": "numeroDocumento",
             "in": "path",
+            "description": "",
             "required": true,
             "schema": {
               "type": "string"
@@ -101,7 +191,9 @@
         "tags": [
           "Transacao"
         ],
+        "summary": "Realiza uma transferência entre contas",
         "requestBody": {
+          "description": "",
           "content": {
             "application/json": {
               "schema": {
@@ -130,6 +222,60 @@
   },
   "components": {
     "schemas": {
+      "ContaBancaria": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nomeCliente": {
+            "type": "string",
+            "nullable": true
+          },
+          "documento": {
+            "type": "string",
+            "nullable": true
+          },
+          "saldo": {
+            "type": "number",
+            "format": "double"
+          },
+          "dataAbertura": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ativa": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ContaBancariaDto": {
+        "type": "object",
+        "properties": {
+          "nomeCliente": {
+            "type": "string",
+            "nullable": true
+          },
+          "documento": {
+            "type": "string",
+            "nullable": true
+          },
+          "saldo": {
+            "type": "number",
+            "format": "double"
+          },
+          "dataAbertura": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ativo": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
       "CriarContaBancariaDto": {
         "type": "object",
         "properties": {

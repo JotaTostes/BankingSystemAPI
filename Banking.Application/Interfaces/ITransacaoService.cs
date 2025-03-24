@@ -4,6 +4,6 @@ namespace Banking.Application.Interfaces
 {
     public interface ITransacaoService
     {
-        Task<bool> TransferirAsync(TransferenciaDto transferenciaDto);
+        Task<(bool Sucesso, List<string> Erros)> TransferirAsync(TransferenciaDto transferenciaDto);
     }
 }

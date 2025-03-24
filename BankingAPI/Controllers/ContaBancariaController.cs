@@ -1,8 +1,6 @@
 ﻿using Banking.Application.DTOs;
 using Banking.Application.Interfaces;
-using Banking.Application.Services;
 using Banking.Domain.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankingAPI.Controllers
@@ -22,6 +20,7 @@ namespace BankingAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<ContaBancaria>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get() => Ok(await _service.ObterTodasContasAsync());
 
         /// <summary>
@@ -30,18 +29,16 @@ namespace BankingAPI.Controllers
         /// <param name="criarContaBancariaDto"></param>
         /// <returns></returns>
         [HttpPost]
+        [ProducesResponseType(typeof(IEnumerable<ContaBancariaDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> CriarConta([FromBody] CriarContaBancariaDto criarContaBancariaDto)
         {
-            if (string.IsNullOrWhiteSpace(criarContaBancariaDto.NomeCliente) ||
-                string.IsNullOrWhiteSpace(criarContaBancariaDto.Documento))
+            var (sucesso, erros) = await _service.CriarContaAsync(criarContaBancariaDto);
+
+            if (!sucesso)
             {
-                return BadRequest("Nome do cliente e número do documento são obrigatórios");
+                if (erros.Any())
+                    return BadRequest(new { Mensagem = "Erro ao criar conta.", Erros = erros });
             }
-
-            var resultado = await _service.CriarContaAsync(criarContaBancariaDto);
-
-            if (!resultado)
-                return Conflict("Já existe uma conta com este número de documento");
 
             return CreatedAtAction(nameof(ObterContas), new { filtroDocumento = criarContaBancariaDto.Documento }, null);
         }
@@ -53,6 +50,7 @@ namespace BankingAPI.Controllers
         /// <param name="documento"></param>
         /// <returns></returns>
         [HttpGet("ContasFiltro")]
+        [ProducesResponseType(typeof(IEnumerable<ContaBancariaDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> ObterContas([FromQuery] string? nome, [FromQuery] string? documento)
         {
             var contas = await _service.BuscarContasAsync(nome, documento);

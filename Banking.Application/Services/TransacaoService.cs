@@ -2,6 +2,7 @@
 using Banking.Application.Interfaces;
 using Banking.Domain.Entities;
 using Banking.Domain.Interfaces;
+using FluentValidation;
 
 namespace Banking.Application.Services
 {
@@ -9,27 +10,28 @@ namespace Banking.Application.Services
     {
         private readonly ITransacoesRepository _repository;
         private readonly IContaBancariaRepository _contaBancariaRepository;
+        private readonly IValidator<TransferenciaDto> _transacaoValidator;
 
-        public TransacaoService(ITransacoesRepository repository, IContaBancariaRepository contaBancariaRepository)
+        public TransacaoService(ITransacoesRepository repository,
+            IContaBancariaRepository contaBancariaRepository,
+            IValidator<TransferenciaDto> transacaoValidator)
         {
             _repository = repository;
             _contaBancariaRepository = contaBancariaRepository;
+            _transacaoValidator = transacaoValidator;
         }
 
-        public async Task<bool> TransferirAsync(TransferenciaDto transferenciaDto)
+        public async Task<(bool Sucesso, List<string> Erros)> TransferirAsync(TransferenciaDto transferenciaDto)
         {
+            var validationResult = await _transacaoValidator.ValidateAsync(transferenciaDto);
+
+            if (!validationResult.IsValid)
+            {
+                return (false, validationResult.Errors.Select(e => e.ErrorMessage).ToList());
+            }
+
             var contaOrigem = await _contaBancariaRepository.GetByDocumentoAsync(transferenciaDto.NumeroDocumentoOrigem);
             var contaDestino = await _contaBancariaRepository.GetByDocumentoAsync(transferenciaDto.NumeroDocumentoDestino);
-
-            // Valida as contas
-            if (contaOrigem == null || contaDestino == null)
-                return false;
-
-            if (!contaOrigem.Ativa || !contaDestino.Ativa)
-                return false;
-
-            if (!contaOrigem.PodeSacar(transferenciaDto.Valor))
-                return false;
 
             contaOrigem.Sacar(transferenciaDto.Valor);
             contaDestino.Depositar(transferenciaDto.Valor);
@@ -40,14 +42,14 @@ namespace Banking.Application.Services
                 transferenciaDto.Valor);
 
             await _repository.AdicionarAsync(transacao);
+            await _repository.SalvarAlteracoesAsync();
 
             await _contaBancariaRepository.UpdateAsync(contaOrigem);
             await _contaBancariaRepository.UpdateAsync(contaDestino);
-
             await _contaBancariaRepository.SalvarAlteracoesAsync();
-            await _repository.SalvarAlteracoesAsync();
 
-            return true;
+            return (true, new List<string>());
         }
+
     }
 }

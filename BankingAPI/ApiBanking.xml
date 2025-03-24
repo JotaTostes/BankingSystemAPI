@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BankingAPI</name>
+    </assembly>
+    <members>
+        <member name="M:BankingAPI.Controllers.ContaBancariaController.Get">
+            <summary>
+            Obtém todas as contas bancárias
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BankingAPI.Controllers.ContaBancariaController.CriarConta(Banking.Application.DTOs.CriarContaBancariaDto)">
+            <summary>
+            Cria uma nova conta bancária
+            </summary>
+            <param name="criarContaBancariaDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BankingAPI.Controllers.ContaBancariaController.ObterContas(System.String,System.String)">
+            <summary>
+            Obtém contas bancárias com base em filtros
+            </summary>
+            <param name="nome"></param>
+            <param name="documento"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BankingAPI.Controllers.ContaBancariaController.DesativarConta(System.String)">
+            <summary>
+            Desativa uma conta bancária
+            </summary>
+            <param name="numeroDocumento"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BankingAPI.Controllers.TransacaoController.Transferir(Banking.Application.DTOs.TransferenciaDto)">
+            <summary>
+            Realiza uma transferência entre contas
+            </summary>
+            <param name="transferenciaDto"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

@@ -2,12 +2,8 @@
 using Banking.Application.Interfaces;
 using Banking.Domain.Entities;
 using Banking.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
+using Banking.Shared.Validations;
+using FluentValidation;
 
 namespace Banking.Application.Services
 {
@@ -15,28 +11,37 @@ namespace Banking.Application.Services
     {
         private readonly IContaBancariaRepository _repository;
         private readonly IRegistroDesativacaoRepository _registroDesativacaoRepository;
-        public ContaBancariaService(IContaBancariaRepository repository, IRegistroDesativacaoRepository registroDesativacaoRepository)
+        private readonly IValidator<CriarContaBancariaDto> _validator;
+        public ContaBancariaService(IContaBancariaRepository repository, IRegistroDesativacaoRepository registroDesativacaoRepository,
+            IValidator<CriarContaBancariaDto> validator)
         {
             _repository = repository;
             _registroDesativacaoRepository = registroDesativacaoRepository;
+            _validator = validator;
         }
 
         public async Task<IEnumerable<ContaBancaria>> ObterTodasContasAsync() =>
             await _repository.GetAllAsync();
 
-        public async Task<bool> CriarContaAsync(CriarContaBancariaDto criarContaBancaria)
+        public async Task<(bool Sucesso, List<string> Erros)> CriarContaAsync(CriarContaBancariaDto criarContaBancaria)
         {
             if (await _repository.DocumentoExisteAsync(criarContaBancaria.Documento))
-                return false;
+                return (false, new List<string> { "Já existe uma conta bancária cadastrada para este documento." });
 
             var conta = new ContaBancaria(
                 criarContaBancaria.NomeCliente,
                 criarContaBancaria.Documento);
 
+            var resultadoValidacao = await _validator.ValidateAsync(criarContaBancaria);
+            if (!resultadoValidacao.IsValid)
+            {
+                return (false, resultadoValidacao.Errors.Select(e => e.ErrorMessage).ToList());
+            }
+
             await _repository.AddAsync(conta);
             await _repository.SalvarAlteracoesAsync();
 
-            return true;
+            return (true, new List<string>());
         }
         public async Task<IEnumerable<ContaBancariaDto>> BuscarContasAsync(string nome, string documento)
         {

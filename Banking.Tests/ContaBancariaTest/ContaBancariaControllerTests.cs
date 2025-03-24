@@ -21,7 +21,6 @@ namespace Banking.Tests.ContaBancariaTest
         [Fact]
         public async Task Get_ShouldReturnOk_WhenAccountsExist()
         {
-            // Arrange
             var contas = new List<ContaBancaria>
         {
             new ContaBancaria { NomeCliente = "João", Documento = "123" },
@@ -30,10 +29,8 @@ namespace Banking.Tests.ContaBancariaTest
 
             _serviceMock.Setup(s => s.ObterTodasContasAsync()).ReturnsAsync(contas);
 
-            // Act
             var result = await _controller.Get();
 
-            // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
             var returnValue = Assert.IsAssignableFrom<IEnumerable<ContaBancaria>>(okResult.Value);
             Assert.Equal(2, returnValue.Count());
@@ -42,47 +39,63 @@ namespace Banking.Tests.ContaBancariaTest
         [Fact]
         public async Task CriarConta_ShouldReturnBadRequest_WhenRequiredFieldsAreMissing()
         {
-            // Arrange
             var dto = new CriarContaBancariaDto
             {
                 NomeCliente = "",
-                Documento = ""
+                Documento = ""   
             };
 
-            // Act
+            var erros = new List<string>
+            {
+                "O nome do cliente é obrigatório",
+                "O documento do cliente é obrigatório"
+            };
+
+            _serviceMock.Setup(s => s.CriarContaAsync(dto)).ReturnsAsync((false, erros));
+
             var result = await _controller.CriarConta(dto);
 
-            // Assert
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.Equal("Nome do cliente e número do documento são obrigatórios", badRequestResult.Value);
+            var response = badRequestResult.Value;
+            var mensagem = response.GetType().GetProperty("Mensagem")?.GetValue(response, null);
+            var errosRetornados = response.GetType().GetProperty("Erros")?.GetValue(response, null) as List<string>;
+
+            Assert.Contains("O nome do cliente é obrigatório", errosRetornados);
+            Assert.Contains("O documento do cliente é obrigatório", errosRetornados);
         }
 
         [Fact]
-        public async Task CriarConta_ShouldReturnConflict_WhenDocumentAlreadyExists()
+        public async Task CriarConta_ShouldReturnBadRequest_WhenDocumentAlreadyExists()
         {
-            // Arrange
-            var dto = new CriarContaBancariaDto { NomeCliente = "João", Documento = "123" };
-            _serviceMock.Setup(s => s.CriarContaAsync(dto)).ReturnsAsync(false);
+            var dto = new CriarContaBancariaDto { NomeCliente = "João", Documento = "38726453789" };
+            var erros = new List<string> { "Já existe uma conta com este número de documento." };
 
-            // Act
+            _serviceMock.Setup(s => s.CriarContaAsync(dto)).ReturnsAsync((false, erros));
+
             var result = await _controller.CriarConta(dto);
 
-            // Assert
-            var conflictResult = Assert.IsType<ConflictObjectResult>(result);
-            Assert.Equal("Já existe uma conta com este número de documento", conflictResult.Value);
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+
+            var response = badRequestResult.Value;
+
+            var mensagem = response.GetType().GetProperty("Mensagem")?.GetValue(response, null);
+            var errosRetornados = response.GetType().GetProperty("Erros")?.GetValue(response, null) as List<string>;
+
+            Assert.NotNull(mensagem);
+            Assert.Equal("Erro ao criar conta.", mensagem);
+
+            Assert.NotNull(errosRetornados);
+            Assert.Contains("Já existe uma conta com este número de documento.", errosRetornados);
         }
 
         [Fact]
         public async Task CriarConta_ShouldReturnCreatedAtAction_WhenAccountIsCreated()
         {
-            // Arrange
             var dto = new CriarContaBancariaDto { NomeCliente = "João", Documento = "123" };
-            _serviceMock.Setup(s => s.CriarContaAsync(dto)).ReturnsAsync(true);
+            _serviceMock.Setup(s => s.CriarContaAsync(dto)).ReturnsAsync((true, new List<string>()));
 
-            // Act
             var result = await _controller.CriarConta(dto);
 
-            // Assert
             var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result);
             Assert.Equal("ObterContas", createdAtActionResult.ActionName);
         }
@@ -90,13 +103,10 @@ namespace Banking.Tests.ContaBancariaTest
         [Fact]
         public async Task DesativarConta_ShouldReturnNotFound_WhenAccountDoesNotExist()
         {
-            // Arrange
             _serviceMock.Setup(s => s.DesativarContaAsync("123", It.IsAny<string>())).ReturnsAsync(false);
 
-            // Act
             var result = await _controller.DesativarConta("123");
 
-            // Assert
             var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
             Assert.Equal("Conta não encontrada ou já está inativa", notFoundResult.Value);
         }
@@ -104,13 +114,10 @@ namespace Banking.Tests.ContaBancariaTest
         [Fact]
         public async Task DesativarConta_ShouldReturnNoContent_WhenAccountIsSuccessfullyDeactivated()
         {
-            // Arrange
             _serviceMock.Setup(s => s.DesativarContaAsync("123", It.IsAny<string>())).ReturnsAsync(true);
 
-            // Act
             var result = await _controller.DesativarConta("123");
 
-            // Assert
             Assert.IsType<NoContentResult>(result);
         }
     }

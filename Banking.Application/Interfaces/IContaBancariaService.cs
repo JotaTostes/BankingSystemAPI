@@ -6,7 +6,7 @@ namespace Banking.Application.Interfaces
     public interface IContaBancariaService
     {
         Task<IEnumerable<ContaBancaria>> ObterTodasContasAsync();
-        Task<bool> CriarContaAsync(CriarContaBancariaDto criarContaBancaria);
+        Task<(bool Sucesso, List<string> Erros)> CriarContaAsync(CriarContaBancariaDto criarContaBancaria);
         Task<IEnumerable<ContaBancariaDto>> BuscarContasAsync(string nome, string documento);
         Task<bool> DesativarContaAsync(string documento, string usuarioResponsavel);
     }
