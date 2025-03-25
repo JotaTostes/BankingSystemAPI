@@ -11,9 +11,9 @@ Antes de iniciar a execução do projeto, certifique-se de ter os seguintes requ
 
 - Visual Studio 2022 (17.8 ou superior)
 
-- SQL Server instalado localmente
+- MySQL instalado localmente
 
-- SQL Server Management Studio (SSMS) para gerenciar o banco de dados
+- DBeaver, MySQL Workbench ou outra ferramenta de sua preferência para gerenciar o banco de dados.
 
 - Postman ou outro cliente para testar APIs (opcional)
 ## Documentação
