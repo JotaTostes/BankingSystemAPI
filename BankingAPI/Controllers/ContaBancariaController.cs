@@ -49,7 +49,7 @@ namespace BankingAPI.Controllers
         /// <param name="nome"></param>
         /// <param name="documento"></param>
         /// <returns></returns>
-        [HttpGet("ContasFiltro")]
+        [HttpGet("ContasByFiltro")]
         [ProducesResponseType(typeof(IEnumerable<ContaBancariaDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> ObterContas([FromQuery] string? nome, [FromQuery] string? documento)
         {
