@@ -1,7 +1,7 @@
 ﻿using Banking.Shared.Util;
 using FluentAssertions;
 
-namespace Banking.Tests.Util
+namespace Banking.Tests.Unit.UtilTest
 {
     public class DocumentoUtilsTests
     {
@@ -21,7 +21,7 @@ namespace Banking.Tests.Util
         [Fact]
         public void IsValidCPF_ValidCPF_ReturnsTrue()
         {
-            string cpf = "12345678909";
+            string cpf = "76319507098";
             bool result = DocumentosUtil.IsValidCPF(cpf);
             Assert.True(result);
         }
@@ -47,7 +47,7 @@ namespace Banking.Tests.Util
         [Fact]
         public void IsValidCNPJ_ValidCNPJ_ReturnsTrue()
         {
-            string cnpj = "12345678000195";
+            string cnpj = "92022716000108";
             bool result = DocumentosUtil.IsValidCNPJ(cnpj);
             Assert.True(result);
         }

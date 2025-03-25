@@ -4,6 +4,18 @@
         <name>BankingAPI</name>
     </assembly>
     <members>
+        <member name="M:BankingAPI.Configurations.SwaggerConfig.AddSwaggerConfiguration(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Configuração do Swagger
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:BankingAPI.Configurations.SwaggerConfig.UseSwaggerConfiguration(Microsoft.AspNetCore.Builder.WebApplication)">
+            <summary>
+            Utilização do Swagger
+            </summary>
+            <param name="app"></param>
+        </member>
         <member name="M:BankingAPI.Controllers.ContaBancariaController.Get">
             <summary>
             Obtém todas as contas bancárias

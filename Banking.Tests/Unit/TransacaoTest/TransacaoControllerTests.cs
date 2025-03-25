@@ -4,7 +4,7 @@ using BankingAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
-namespace Banking.Tests.TransacaoTest
+namespace Banking.Tests.Unit.TransacaoTest
 {
     public class TransacaoControllerTests
     {

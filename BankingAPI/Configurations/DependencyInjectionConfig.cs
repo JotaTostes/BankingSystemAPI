@@ -2,7 +2,6 @@
 using Banking.Application.Interfaces;
 using Banking.Application.Services;
 using Banking.Application.Validations;
-using Banking.Domain.Entities;
 using Banking.Domain.Interfaces;
 using Banking.Infrastructure.Context;
 using Banking.Infrastructure.Repositories;
@@ -10,7 +9,6 @@ using Banking.Shared.Validations;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace BankingAPI.Configurations
 {

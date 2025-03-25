@@ -29,35 +29,79 @@ namespace Banking.Shared.Util
         /// <returns></returns>
         public static bool IsValidCPF(string cpf)
         {
-            bool allDigitsEqual = true;
-            for (int i = 1; i < cpf.Length; i++)
-            {
-                if (cpf[i] != cpf[0])
-                {
-                    allDigitsEqual = false;
-                    break;
-                }
-            }
-
-            if (allDigitsEqual)
+            if (string.IsNullOrWhiteSpace(cpf) || cpf.Length != 11 || !Regex.IsMatch(cpf, @"^\d{11}$"))
                 return false;
 
-            int soma = 0;
-            for (int i = 0; i < 9; i++)
-                soma += int.Parse(cpf[i].ToString()) * (10 - i);
+            if (AllDigitsEqual(cpf))
+                return false;
+
+            var (firstDigit, secondDigit) = CalculateDigitCPF(cpf, 9);
+            return cpf[9] == (firstDigit + '0') && cpf[10] == (secondDigit + '0');
+        }
+
+        /// <summary>
+        /// Verifica se todos os dígitos são iguais
+        /// </summary>
+        /// <param name="cpfOuCnpj"></param>
+        /// <returns></returns>
+        private static bool AllDigitsEqual(string cpfOuCnpj) => cpfOuCnpj.All(d => d == cpfOuCnpj[0]);
+
+        /// <summary>
+        /// Calcula um dígito verificador CPF
+        /// </summary>
+        /// <param name="numero"></param>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        private static (int firstDigit, int secondDigit) CalculateDigitCPF(string number, int length)
+        {
+            int[] multiplicadoresCPF1 = { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
+            int[] multiplicadoresCPF2 = { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
+
+            int soma = number.Take(length)
+                             .Select((digit, index) => (digit - '0') * multiplicadoresCPF1[index])
+                             .Sum();
 
             int resto = soma % 11;
-            int dv1 = resto < 2 ? 0 : 11 - resto;
+            int firstDigit = (resto < 2) ? 0 : 11 - resto;
 
-            soma = 0;
-            for (int i = 0; i < 10; i++)
-                soma += int.Parse(cpf[i].ToString()) * (11 - i);
+            soma = number.Take(length + 1)
+                         .Select((digit, index) => (digit - '0') * multiplicadoresCPF2[index])
+                         .Sum();
 
             resto = soma % 11;
-            int dv2 = resto < 2 ? 0 : 11 - resto;
+            int secondDigit = (resto < 2) ? 0 : 11 - resto;
 
-            return dv1 == int.Parse(cpf[9].ToString()) && dv2 == int.Parse(cpf[10].ToString());
+            return (firstDigit, secondDigit);
         }
+
+        /// <summary>
+        /// Calcula um dígito verificador CNPJ
+        /// </summary>
+        /// <param name="number"></param>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        private static (int firstDigit, int secondDigit) CalculateDigitCNPJ(string number, int length)
+        {
+            int[] multiplicadoresCNPJ1 = { 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+            int[] multiplicadoresCNPJ2 = { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+
+            int soma = number.Take(length)
+                             .Select((digit, index) => (digit - '0') * multiplicadoresCNPJ1[index])
+                             .Sum();
+
+            int resto = soma % 11;
+            int firstDigit = (resto < 2) ? 0 : 11 - resto;
+
+            soma = number.Take(length + 1)
+                         .Select((digit, index) => (digit - '0') * multiplicadoresCNPJ2[index])
+                         .Sum();
+
+            resto = soma % 11;
+            int secondDigit = (resto < 2) ? 0 : 11 - resto;
+
+            return (firstDigit, secondDigit);
+        }
+
 
         /// <summary>
         /// Função que valida um CNPJ
@@ -66,38 +110,15 @@ namespace Banking.Shared.Util
         /// <returns></returns>
         public static bool IsValidCNPJ(string cnpj)
         {
-            bool allDigitsEqual = true;
-            for (int i = 1; i < cnpj.Length; i++)
-            {
-                if (cnpj[i] != cnpj[0])
-                {
-                    allDigitsEqual = false;
-                    break;
-                }
-            }
-
-            if (allDigitsEqual)
+            if (string.IsNullOrWhiteSpace(cnpj) || cnpj.Length != 14 || !Regex.IsMatch(cnpj, @"^\d{14}$"))
                 return false;
 
-            int[] multiplicadores1 = { 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
-            int soma = 0;
+            if (AllDigitsEqual(cnpj))
+                return false;
 
-            for (int i = 0; i < 12; i++)
-                soma += int.Parse(cnpj[i].ToString()) * multiplicadores1[i];
+            var (firstDigit, secondDigit) = CalculateDigitCNPJ(cnpj, 12);
 
-            int resto = soma % 11;
-            int dv1 = resto < 2 ? 0 : 11 - resto;
-
-            int[] multiplicadores2 = { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
-            soma = 0;
-
-            for (int i = 0; i < 13; i++)
-                soma += int.Parse(cnpj[i < 12 ? i : 12].ToString()) * multiplicadores2[i];
-
-            resto = soma % 11;
-            int dv2 = resto < 2 ? 0 : 11 - resto;
-
-            return dv1 == int.Parse(cnpj[12].ToString()) && dv2 == int.Parse(cnpj[13].ToString());
+            return cnpj[12] == (firstDigit + '0') && cnpj[13] == (secondDigit + '0');
         }
     }
 }

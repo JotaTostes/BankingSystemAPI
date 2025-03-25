@@ -5,7 +5,7 @@ using Banking.Domain.Entities;
 using Banking.Domain.Interfaces;
 using Moq;
 
-namespace Banking.Tests.TransacaoTest
+namespace Banking.Tests.Unit.TransacaoTest
 {
     public class TransacaoServiceTests
     {
