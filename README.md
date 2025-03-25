@@ -1,9 +1,9 @@
 
-# API Banking
+# 🏦 API Banking
 
 A API Banking é um sistema de caixa de banco que permite o cadastro de contas bancárias e a transferência de valores entre elas. Esta documentação fornece informações detalhadas sobre como rodar localmente a API e também integrar e utilizar a API em seus sistemas.
 
-# Arquitetura
+# 📐 Arquitetura
 Esta API segue uma arquitetura em camadas baseada nos princípios do Clean Architecture e DDD (Domain-Driven Design).
 O projeto está organizado da seguinte forma:
 
@@ -15,25 +15,26 @@ O projeto está organizado da seguinte forma:
  ┣ 📂 Banking.Tests              - Testes unitários e de integração  
  ┣ 📂 BankingAPI                 - Camada de apresentação (Controllers, Configurations)  
 
-## Requisitos
-Antes de iniciar a execução do projeto, certifique-se de ter os seguintes requisitos instalados:
+# ✅ Requisitos
+Antes de rodar a API, certifique-se de ter os seguintes requisitos instalados:
 
-- .NET 8 SDK
+✅ .NET 8 SDK
 
-- Visual Studio 2022 (17.8 ou superior)
+✅ Visual Studio 2022 (17.8 ou superior)
 
-- SQL Server instalado localmente
+✅ MySQL instalado localmente
 
-- SQL Server Management Studio (SSMS) para gerenciar o banco de dados
+✅ DBeaver, MySQL Workbench ou outra ferramenta de sua preferência para gerenciar o banco de dados.
 
-- Postman ou outro cliente para testar APIs (opcional)
-## Documentação
+✅ Postman ou outro cliente para testar APIs (opcional
+
+## 📖 Documentação
 A API utiliza o Swagger para documentação e, ao executar o projeto, a interface do Swagger será aberta automaticamente.
 
 
-## Rodando Local
+## 🚀 Rodando o Projeto Localmente
 
-Clone o projeto
+Clonando o repositório
 
 ```bash
   git clone https://github.com/JotaTostes/BankingSystemAPI.git
@@ -45,41 +46,43 @@ Va para o diretório do projeto e execute o arquivo
  BankingSystemAPI.sln
 ```
 
+## 🗄️ Configuração do Banco de Dados
+1️⃣ Certifique-se de que o MySQÇ está rodando e aceitando conexões locais.
 
-
-
-## Configuração do Banco de Dados
-Certifique-se de que o SQL Server está rodando e aceitando conexões locais.
-
-Abra o SQL Server Management Studio (SSMS) e execute o seguinte comando para criar o banco de dados:
+2️⃣ Abra o gerenciador de banco de dados de sua preferência e execute o seguinte comando para criar o banco de dados:
 ```bash
   CREATE DATABASE Bank;
 ```
 
-## Aplicando as Migrações
-Execute o código para aplicar as migrações e criar as tabelas
+## 🔹Aplicando as Migrações
+Para criar as tabelas no banco de dados, execute:
 ```bash
   dotnet ef database update
 ```
-## Executando o Projeto
+## ▶️ Executando a API
 Para rodar a aplicação, utilize o seguinte comando na raiz do projeto:
 ```bash
 dotnet run
 ```
 Ou, se estiver utilizando Visual Studio, pressione F5 para iniciar a depuração.
-O terminal irá abrir mostrará a URL onde a API está rodando, por exemplo:
+pós a inicialização, a API estará disponível em:
 ```bash
 Now listening on: https://localhost:5001
 Now listening on: http://localhost:5000
 ```
 Agora você pode acessar https://localhost:5001/index.html para testar a API.
-## Integração com API
+
+## 🔗 Integração com a API
 Abaixo, você encontrará um exemplo de como implementar uma chamada GET em sua API para consumir a API Banking. Detalhes como métodos, tipos de retorno e outras informações estão disponíveis na documentação do Swagger.
 
-- Utilize HttpClient para configurar requisições para a API 
-- URL https://localhost:5001/api/[controller]
-- Atualmente, nossa API não requer autenticação JWT. A segurança do sistema será garantida por meio da restrição física de acesso à máquina onde ele será executado.
+🔹 Exemplo de Requisição GET
 
+A API pode ser consumida via HttpClient.
+
+- Base URL: https://localhost:5001/api/[controller]
+- Autenticação: Atualmente, a API não requer autenticação JWT. O acesso é controlado fisicamente pela máquina onde a API está sendo executada.
+
+📌 Exemplo de Código C# para Buscar Contas Bancárias
 ```c#
 public class ContaBancaria
 {
@@ -114,3 +117,17 @@ public class Program
     }
 }
 ```
+
+## 📌 Contribuindo
+
+Se quiser contribuir com melhorias ou correções, siga estes passos:
+
+- Fork o repositório
+
+- Crie uma branch (git checkout -b feature/nova-feature)
+
+- Faça suas alterações e commite (git commit -m "Descrição da melhoria")
+
+- Faça um push para sua branch (git push origin feature/nova-feature)
+
+- Abra um Pull Request
