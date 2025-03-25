@@ -3,6 +3,17 @@
 
 A API Banking é um sistema de caixa de banco que permite o cadastro de contas bancárias e a transferência de valores entre elas. Esta documentação fornece informações detalhadas sobre como rodar localmente a API e também integrar e utilizar a API em seus sistemas.
 
+# Arquitetura
+Esta API segue uma arquitetura em camadas baseada nos princípios do Clean Architecture e DDD (Domain-Driven Design).
+O projeto está organizado da seguinte forma:
+
+📦 BankingSystemAPI  
+ ┣ 📂 Banking.Application        - Contém os casos de uso e regras de negócio  
+ ┣ 📂 Banking.Domain             - Define as entidades, agregados e interfaces do domínio  
+ ┣ 📂 Banking.Infrastructure     - Implementa repositórios, serviços externos e banco de dados  
+ ┣ 📂 Banking.Shared             - Classes utilitárias e componentes compartilhados  
+ ┣ 📂 Banking.Tests              - Testes unitários e de integração  
+ ┣ 📂 BankingAPI                 - Camada de apresentação (Controllers, Configurations)  
 
 ## Requisitos
 Antes de iniciar a execução do projeto, certifique-se de ter os seguintes requisitos instalados:
