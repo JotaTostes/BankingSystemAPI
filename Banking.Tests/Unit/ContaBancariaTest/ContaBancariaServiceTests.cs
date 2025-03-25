@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Banking.Tests.ContaBancariaTest
+namespace Banking.Tests.Unit.ContaBancariaTest
 {
     public class ContaBancariaServiceTests
     {
@@ -55,7 +55,7 @@ namespace Banking.Tests.ContaBancariaTest
         {
             var dto = new CriarContaBancariaDto { NomeCliente = "Maria", Documento = "60683743007" };
 
-            _mockContaBancariaRepository.Setup(repo => repo.DocumentoExisteAsync(dto.Documento)).ReturnsAsync(false);
+            _mockContaBancariaRepository.Setup(repo => repo.DocumentoExiste(dto.Documento)).Returns(false);
             _mockContaBancariaRepository.Setup(repo => repo.AddAsync(It.IsAny<ContaBancaria>())).Returns(Task.CompletedTask);
 
             var (sucesso, erros) = await _service.CriarContaAsync(dto);
@@ -70,7 +70,7 @@ namespace Banking.Tests.ContaBancariaTest
             var dto = new CriarContaBancariaDto { NomeCliente = "João", Documento = "28591434080" };
             var errosEsperados = new List<string> { "Já existe uma conta bancária cadastrada para este documento." };
 
-            _mockContaBancariaRepository.Setup(repo => repo.DocumentoExisteAsync(dto.Documento)).ReturnsAsync(true);
+            _mockContaBancariaRepository.Setup(repo => repo.DocumentoExiste(dto.Documento)).Returns(true);
 
             var (sucesso, erros) = await _service.CriarContaAsync(dto);
 

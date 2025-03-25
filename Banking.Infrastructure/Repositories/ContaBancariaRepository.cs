@@ -19,6 +19,9 @@ namespace Banking.Infrastructure.Repositories
         public async Task<ContaBancaria?> GetByDocumentoAsync(string documento) =>
             await _context.ContasBancarias.FirstOrDefaultAsync(c => c.Documento == documento);
 
+        public ContaBancaria? GetByDocumento(string documento) =>
+            _context.ContasBancarias.FirstOrDefault(c => c.Documento == documento);
+
         public async Task AddAsync(ContaBancaria conta)
         {
             await _context.ContasBancarias.AddAsync(conta);
@@ -52,10 +55,10 @@ namespace Banking.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> DocumentoExisteAsync(string documento)
+        public bool DocumentoExiste(string documento)
         {
-            return await _context.ContasBancarias
-                .AnyAsync(a => a.Documento == documento);
+            return _context.ContasBancarias
+                .Any(a => a.Documento == documento);
         }
     }
 }

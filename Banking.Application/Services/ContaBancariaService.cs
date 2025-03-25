@@ -2,8 +2,10 @@
 using Banking.Application.Interfaces;
 using Banking.Domain.Entities;
 using Banking.Domain.Interfaces;
+using Banking.Shared.Util;
 using Banking.Shared.Validations;
 using FluentValidation;
+using System.Text.RegularExpressions;
 
 namespace Banking.Application.Services
 {
@@ -25,12 +27,14 @@ namespace Banking.Application.Services
 
         public async Task<(bool Sucesso, List<string> Erros)> CriarContaAsync(CriarContaBancariaDto criarContaBancaria)
         {
-            if (await _repository.DocumentoExisteAsync(criarContaBancaria.Documento))
+            string documentoNormalizado = DocumentosUtil.RemoverCaracteresEspeciais(criarContaBancaria.Documento);
+
+            if (_repository.DocumentoExiste(criarContaBancaria.Documento))
                 return (false, new List<string> { "Já existe uma conta bancária cadastrada para este documento." });
 
             var conta = new ContaBancaria(
                 criarContaBancaria.NomeCliente,
-                criarContaBancaria.Documento);
+                documentoNormalizado);
 
             var resultadoValidacao = await _validator.ValidateAsync(criarContaBancaria);
             if (!resultadoValidacao.IsValid)
@@ -45,7 +49,8 @@ namespace Banking.Application.Services
         }
         public async Task<IEnumerable<ContaBancariaDto>> BuscarContasAsync(string nome, string documento)
         {
-            var contas = await _repository.BuscarContasAsync(nome, documento);
+            var documentoNormalizado = DocumentosUtil.RemoverCaracteresEspeciais(documento);
+            var contas = await _repository.BuscarContasAsync(nome, documentoNormalizado);
 
             return contas.Select(a => new ContaBancariaDto
             {
@@ -59,7 +64,8 @@ namespace Banking.Application.Services
 
         public async Task<bool> DesativarContaAsync(string documento, string usuarioResponsavel)
         {
-            var conta = await _repository.GetByDocumentoAsync(documento);
+            var documentoNormalizado =  DocumentosUtil.RemoverCaracteresEspeciais(documento);
+            var conta = await _repository.GetByDocumentoAsync(documentoNormalizado);
 
             if (conta == null || !conta.Ativa)
                 return false;
@@ -67,7 +73,7 @@ namespace Banking.Application.Services
             conta.Desativar();
             await _repository.UpdateAsync(conta);
 
-            var registro = new RegistroDesativacaoConta(documento, usuarioResponsavel);
+            var registro = new RegistroDesativacaoConta(documentoNormalizado, usuarioResponsavel);
             await _registroDesativacaoRepository.AdicionarAsync(registro);
 
             await _repository.SalvarAlteracoesAsync();

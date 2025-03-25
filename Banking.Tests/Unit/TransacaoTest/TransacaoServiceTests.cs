@@ -4,13 +4,8 @@ using Banking.Application.Validations;
 using Banking.Domain.Entities;
 using Banking.Domain.Interfaces;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Banking.Tests.TransacaoTest
+namespace Banking.Tests.Unit.TransacaoTest
 {
     public class TransacaoServiceTests
     {
@@ -55,7 +50,6 @@ namespace Banking.Tests.TransacaoTest
         [Fact]
         public async Task TransferirAsync_DeveRetornarTrueSeTransferenciaForBemSucedida()
         {
-            // Arrange
             var transferenciaDto = new TransferenciaDto
             {
                 NumeroDocumentoOrigem = "26848139068",

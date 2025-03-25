@@ -2,10 +2,11 @@ using Banking.Application.DTOs;
 using Banking.Application.Interfaces;
 using Banking.Domain.Entities;
 using BankingAPI.Controllers;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
-namespace Banking.Tests.ContaBancariaTest
+namespace Banking.Tests.Unit.ContaBancariaTest
 {
     public class ContaBancariaControllerTests
     {
@@ -42,7 +43,7 @@ namespace Banking.Tests.ContaBancariaTest
             var dto = new CriarContaBancariaDto
             {
                 NomeCliente = "",
-                Documento = ""   
+                Documento = ""
             };
 
             var erros = new List<string>
@@ -119,6 +120,25 @@ namespace Banking.Tests.ContaBancariaTest
             var result = await _controller.DesativarConta("123");
 
             Assert.IsType<NoContentResult>(result);
+        }
+
+        [Fact]
+        public async Task ObterContas_DeveRetornar200OK_ComListaDeContas()
+        {
+            var contasEsperadas = new List<ContaBancariaDto>
+            {
+                new ContaBancariaDto {  NomeCliente = "João Silva", Documento = "12345678900" },
+                new ContaBancariaDto {  NomeCliente = "Maria Souza", Documento = "98765432100" }
+            };
+
+            _serviceMock.Setup(s => s.BuscarContasAsync(It.IsAny<string>(), It.IsAny<string>()))
+                        .ReturnsAsync(contasEsperadas);
+
+            var resultado = await _controller.ObterContas("João", "12345678900") as OkObjectResult;
+
+            resultado.Should().NotBeNull();
+            resultado!.StatusCode.Should().Be(200);
+            resultado.Value.Should().BeEquivalentTo(contasEsperadas);
         }
     }
 

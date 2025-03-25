@@ -34,24 +34,21 @@ namespace Banking.Application.Validations
                 .WithMessage("O valor da transferência deve ser maior que zero.");
 
             RuleFor(t => t)
-                .CustomAsync(async (transacao, context, cancellationToken) =>
+                .Custom((transacao, context) =>
                 {
 
-                    var contaOrigem = await _contaBancariaRepository.GetByDocumentoAsync(transacao.NumeroDocumentoOrigem);
-                    var contaDestino = await _contaBancariaRepository.GetByDocumentoAsync(transacao.NumeroDocumentoDestino);
+                    var contaOrigem =  _contaBancariaRepository.GetByDocumentoAsync(transacao.NumeroDocumentoOrigem).Result;
+                    var contaDestino =  _contaBancariaRepository.GetByDocumentoAsync(transacao.NumeroDocumentoDestino).Result;
 
-                    // Verificando se as contas existem
                     if (contaOrigem == null)
                         context.AddFailure("NumeroDocumentoOrigem", "A conta de origem não existe.");
 
                     if (contaDestino == null)
                         context.AddFailure("NumeroDocumentoDestino", "A conta de destino não existe.");
 
-                    // Se alguma das contas não existir, não precisa continuar
                     if (contaOrigem == null || contaDestino == null)
                         return;
 
-                    // Verificando se as contas estão ativas
                     if (contaOrigem.Ativa != true)
                         context.AddFailure("Ativa", "A conta de origem não está ativa.");
 
