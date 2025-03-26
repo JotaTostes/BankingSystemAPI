@@ -139,6 +139,14 @@ public class Program
     }
 }
 ```
+## ⚙️ Branches
+Para manter o código organizado e permitir atualizações seguras, seguimos uma estratégia de controle de versões baseada em branches:
+
+🏷️ Principais Branches
+
+main:	Versão estável da aplicação (produção).
+
+dev:	Ambiente de desenvolvimento (features e correções são mescladas aqui antes de irem para main).
 
 ## 📌 Contribuindo
 
