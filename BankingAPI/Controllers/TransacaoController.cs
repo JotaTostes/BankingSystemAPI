@@ -1,12 +1,13 @@
-﻿using Banking.Application.DTOs;
+﻿using Asp.Versioning;
+using Banking.Application.DTOs;
 using Banking.Application.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankingAPI.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1.0")]
     public class TransacaoController : ControllerBase
     {
         private readonly ITransacaoService _service;
