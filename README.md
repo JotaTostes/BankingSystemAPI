@@ -70,7 +70,29 @@ pós a inicialização, a API estará disponível em:
 Now listening on: https://localhost:5001
 Now listening on: http://localhost:5000
 ```
-Agora você pode acessar https://localhost:5001/index.html para testar a API.
+Agora você pode acessar https://localhost:5001/swagger/index.html para testar a API.
+
+## ❤️‍🩹 Monitoramento da Saúde da Aplicação
+Esta API conta com um sistema de Health Check para verificar o estado da aplicação e a conexão com o banco de dados MySQL. O Health Check ajuda a garantir que o serviço esteja funcionando corretamente.
+
+🔍 Como verificar o status da API?
+
+Para checar a saúde da aplicação, basta acessar a seguinte URL no navegador ou via Postman:
+```bash
+https://localhost:5001/health
+```
+🏥 Possíveis respostas do Health Check:
+
+✅ Healthy	A API está funcionando corretamente e conectada ao banco de dados
+
+❌ Unhealthy	A API não está operando corretamente (pode ser falha no banco de dados ou erro crítico no sistema)
+
+## 📌 Versionamento da API
+Esta API utiliza Asp.Versioning para permitir múltiplas versões, garantindo compatibilidade com diferentes clientes ao longo do tempo. O versionamento é essencial para manter a evolução da API sem impactar aplicações que dependem de versões anteriores.
+
+Rota → Exemplo: /api/v1/[controller]
+
+Atualemte contamos somente com a v1.
 
 ## 🔗 Integração com a API
 Abaixo, você encontrará um exemplo de como implementar uma chamada GET em sua API para consumir a API Banking. Detalhes como métodos, tipos de retorno e outras informações estão disponíveis na documentação do Swagger.
@@ -79,7 +101,7 @@ Abaixo, você encontrará um exemplo de como implementar uma chamada GET em sua 
 
 A API pode ser consumida via HttpClient.
 
-- Base URL: https://localhost:5001/api/[controller]
+- Base URL: https://localhost:5001/api/v1/[controller]
 - Autenticação: Atualmente, a API não requer autenticação JWT. O acesso é controlado fisicamente pela máquina onde a API está sendo executada.
 
 📌 Exemplo de Código C# para Buscar Contas Bancárias
@@ -103,7 +125,7 @@ public class Program
         
         try
         {
-            var contas = await httpClient.GetFromJsonAsync<List<ContaBancaria>>("api/ContaBancaria");
+            var contas = await httpClient.GetFromJsonAsync<List<ContaBancaria>>("api/v1/ContaBancaria");
             
             foreach (var conta in contas)
             {
@@ -117,6 +139,14 @@ public class Program
     }
 }
 ```
+## ⚙️ Branches
+Para manter o código organizado e permitir atualizações seguras, seguimos uma estratégia de controle de versões baseada em branches:
+
+🏷️ Principais Branches
+
+main:	Versão estável da aplicação (produção).
+
+dev:	Ambiente de desenvolvimento (features e correções são mescladas aqui antes de irem para main).
 
 ## 📌 Contribuindo
 
