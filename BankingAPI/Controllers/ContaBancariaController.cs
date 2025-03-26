@@ -1,12 +1,14 @@
-﻿using Banking.Application.DTOs;
+﻿using Asp.Versioning;
+using Banking.Application.DTOs;
 using Banking.Application.Interfaces;
 using Banking.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankingAPI.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1.0")]
     public class ContaBancariaController : ControllerBase
     {
         private readonly IContaBancariaService _service;

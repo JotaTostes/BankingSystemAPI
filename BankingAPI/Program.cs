@@ -1,4 +1,5 @@
-﻿using Banking.Infrastructure.Context;
+﻿using Asp.Versioning;
+using Banking.Infrastructure.Context;
 using BankingAPI.Configurations;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +10,21 @@ builder.Services.AddDependencyInjection(builder.Configuration.GetConnectionStrin
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerConfiguration();
+builder.Services.AddHealthChecks()
+     .AddMySql(builder.Configuration.GetConnectionString("DefaultConnection"));
+
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+})
+.AddMvc()
+.AddApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true;
+});
 
 var app = builder.Build();
 
@@ -25,4 +41,6 @@ app.UseSwaggerConfiguration();
 app.UseRouting();
 app.UseAuthorization();
 app.MapControllers();
+app.MapHealthChecks("/health");
+
 app.Run();

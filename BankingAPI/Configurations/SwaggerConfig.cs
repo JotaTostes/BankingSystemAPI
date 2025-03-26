@@ -1,4 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
+using Asp.Versioning.ApiExplorer;
 
 namespace BankingAPI.Configurations
 {
@@ -26,6 +27,7 @@ namespace BankingAPI.Configurations
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, "ApiBanking.xml");
                 c.IncludeXmlComments(xmlPath);
             });
+            
         }
 
         /// <summary>
@@ -39,8 +41,11 @@ namespace BankingAPI.Configurations
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Banking API V1");
-                    c.RoutePrefix = "v1/swagger";
+                    var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+                    foreach (var description in provider.ApiVersionDescriptions)
+                    {
+                        c.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                    }
                 });
             }
         }
