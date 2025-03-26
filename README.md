@@ -70,7 +70,7 @@ pós a inicialização, a API estará disponível em:
 Now listening on: https://localhost:5001
 Now listening on: http://localhost:5000
 ```
-Agora você pode acessar https://localhost:5001/index.html para testar a API.
+Agora você pode acessar https://localhost:5001/swagger/index.html para testar a API.
 
 ## ❤️‍🩹 Monitoramento da Saúde da Aplicação
 Esta API conta com um sistema de Health Check para verificar o estado da aplicação e a conexão com o banco de dados MySQL. O Health Check ajuda a garantir que o serviço esteja funcionando corretamente.
